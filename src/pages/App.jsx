@@ -92,7 +92,7 @@ export const App = () => {
                   dataMovie={value}
                   DataAll={LoadData}
                 />
-              ))}
+            ))}
         </div>
       </div>
     </div>
