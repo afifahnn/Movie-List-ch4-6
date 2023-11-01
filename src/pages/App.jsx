@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { RiArrowRightLine } from "react-icons/ri";
 import { Home1 } from "../assets/components/Home1";
-import { getDataMovie } from "../services/get-data-movie";
+import { useDataMoviesPopularQuery } from "../services/get-data-movie";
 import { Home2 } from "../assets/components/Home2";
 import { GoSearch } from "react-icons/go";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,29 +10,55 @@ import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { CookiesKey, CookiesStorage } from "../utils/cookies";
+import { useDispatch, useSelector } from "react-redux";
+import { GetMovie } from "../redux/actions/authMovie";
 
 export const App = () => {
-  const [LoadData, setLoadData] = useState([]);
+  // const [LoadData, setLoadData] = useState([]);
   const [SeeAllMovie, setSeeAllMovie] = useState(false);
   const [SearchInput, setSearchInput] = useState("");
   const [ShowMovie, setShowMovie] = useState(true);
 
   SwiperCore.use([Pagination, Autoplay]);
 
-  const filterMovie = LoadData.filter((item) =>
+
+  const dispatch = useDispatch()
+
+    const getMovie = () => {
+        dispatch(GetMovie())
+    }
+
+    useEffect(() => {
+        getMovie()
+    }, [] )
+
+    const {movies} = useSelector((store) => store.movie)
+
+    const LoadData = movies
+
+  // const { data: movie } = useDataMoviesPopularQuery();
+
+  // useEffect(() => {
+  //   setLoadData(movie);
+  //   // getDataMovie()
+  //   //   .then((data) => setLoadData(data.results))
+  //   //   .catch((error) => console.error("Error fetching data:", error));
+  // }, [movie]);
+
+  const filterMovie = LoadData ? LoadData.filter((item) =>
     item.title.toLowerCase().includes(SearchInput.toLowerCase())
-  );
+  ) : [];
 
   const handleSearch = (e) => {
     setShowMovie(!e.target.value);
     setSearchInput(e.target.value);
   };
 
-  useEffect(() => {
-    getDataMovie()
-      .then((data) => setLoadData(data.results))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+  const handleLogout = () => {
+    CookiesStorage.remove(CookiesKey.AuthToken);
+    window.location.href = "/";
+  };
 
   return (
     <div>
@@ -54,11 +80,10 @@ export const App = () => {
             </div>
           </div>
           <div className="flex gap-4">
-            <div className="px-5 py-1 border-2 border-red-600 rounded-3xl text-red-600 hover:border-red-400 hover:text-red-400">
-              <button>Login</button>
-            </div>
             <div className="bg-red-600 px-5 py-1 border-2 border-red-600 rounded-3xl text-white hover:border-red-400 hover:bg-red-400">
-              <button>Register</button>
+              {/* <Link to={'/'}> */}
+                <button onClick={handleLogout} className="w-full h-full">Logout</button>
+              {/* </Link> */}
             </div>
           </div>
         </div>
@@ -75,7 +100,7 @@ export const App = () => {
           scrollbar={{ draggable: true }}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
         >
-          {LoadData.map((value) => (
+          {LoadData?.map((value) => (
             <SwiperSlide key={value.id}>
               <Home1 dataMovie={value} />
             </SwiperSlide>

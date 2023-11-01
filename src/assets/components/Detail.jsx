@@ -1,17 +1,37 @@
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useMovieDataQueryDetail } from "../../services/get-data-detail";
+import { useDataMoviesDetailQuery } from "../../services/get-data-detail";
 import { RiMovieLine } from "react-icons/ri";
 import { RiArrowLeftLine } from "react-icons/ri";
 import { RiStarLine } from "react-icons/ri";
-import { GoSearch } from "react-icons/go";
 import { Link } from "react-router-dom";
+import { CookiesKey, CookiesStorage } from "../../utils/cookies";
 
-export const Detail = (props) => {
-  const { id } = useParams();
-  const { data } = useMovieDataQueryDetail(id);
+export const Detail = () => {
+  const { id } = useParams(); 
+  const { data } = useDataMoviesDetailQuery(id);
   console.log(data);
   const movie = data ? data : [];
+
+  // const [details, setDetails] = useState({});
+  // const [genres, setGenres] = useState([]);
+  // const [key, setKey] = useState([]);
+
+  // const { data: dataDetail } = useDataMoviesDetailQuery();
+
+  // useEffect(() => {
+  //   setDetails(dataDetail);
+  //   setGenres(dataDetail?.genres);
+  //   setKey(dataDetail?.videos); 
+  // }, [dataDetail]);
+
+  // const idKey = key?.map((value) => value.key);
+  // const kunci = idKey?.shift();
+
+  const handleLogout = () => {
+    CookiesStorage.remove(CookiesKey.AuthToken);
+    window.location.href = "/";
+  };
 
   return (
     <div className="relative w-[100%]">
@@ -22,16 +42,14 @@ export const Detail = (props) => {
             Movielist
           </div>
           <div className="flex gap-4">
-            <div className="px-5 py-1 border-2 border-red-600 rounded-3xl text-red-600 hover:border-red-400 hover:text-red-400">
-              <button>Login</button>
-            </div>
             <div className="bg-red-600 px-5 py-1 border-2 border-red-600 rounded-3xl text-white hover:border-red-400 hover:bg-red-400">
-              <button>Register</button>
+              <button onClick={handleLogout}>Logout</button>
             </div>
           </div>
         </div>
       </div>
 
+    <div>
       <img
         className="w-screen h-screen block"
         src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
@@ -62,7 +80,7 @@ export const Detail = (props) => {
             WATCH TRAILER
           </button>
         </div>
-        <Link to="/">
+        <Link to="/Home">
           <div className="mt-[1rem] bg-red-600 px-5 py-1 border-2 border-red-600 rounded-3xl text-white w-[30%] hover:border-red-400 hover:bg-red-400">
             <button className="flex items-center justify-center gap-2">
               <RiArrowLeftLine size={20} />
@@ -71,6 +89,7 @@ export const Detail = (props) => {
           </div>
         </Link>
       </div>
+    </div>
     </div>
   );
 };
