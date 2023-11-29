@@ -6,6 +6,8 @@ import { RiArrowLeftLine } from "react-icons/ri";
 import { RiStarLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { CookiesKey, CookiesStorage } from "../../utils/cookies";
+import { useDispatch, useSelector } from "react-redux";
+import { GetMovieDetail } from "../../redux/actions/authDetail";
 
 export const Detail = () => {
   const { id } = useParams(); 
@@ -13,20 +15,21 @@ export const Detail = () => {
   console.log(data);
   const movie = data ? data : [];
 
-  // const [details, setDetails] = useState({});
-  // const [genres, setGenres] = useState([]);
-  // const [key, setKey] = useState([]);
+  // const dispatch = useDispatch()
 
-  // const { data: dataDetail } = useDataMoviesDetailQuery();
+  //  const getDetail = () => {
+  //    dispatch(GetMovieDetail(id))
+  //  }
 
-  // useEffect(() => {
-  //   setDetails(dataDetail);
-  //   setGenres(dataDetail?.genres);
-  //   setKey(dataDetail?.videos); 
-  // }, [dataDetail]);
+  //   useEffect(() => {
+  //     getDetail()
+  //   }, [] )
 
-  // const idKey = key?.map((value) => value.key);
-  // const kunci = idKey?.shift();
+  //   const movie = useSelector((store) => store.detail.details)
+  //   // const movie = detail ? detail : [];
+  //   console.log(movie)
+
+
 
   const handleLogout = () => {
     CookiesStorage.remove(CookiesKey.AuthToken);
@@ -52,14 +55,14 @@ export const Detail = () => {
     <div>
       <img
         className="w-screen h-screen block"
-        src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+        src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
         alt="Gambar"
       />
       <div className="absolute w-full top-0 left-0 h-full bg-opacity-50 bg-black"></div>
       <div className="absolute w-full h-15 bottom-0 left-0 bg-gradient-to-t from-black to-transparent"></div>
       <div className="absolute top-[30%] transform w-[50%] px-4 py-2 space-y-4">
         <div className="text-slate-100 font-bold text-[3rem]">
-          {movie.title}
+          {movie?.title}
         </div>
         <div className="text-slate-100">
           {movie.genres?.map((genre) => genre.name).join(", ")}

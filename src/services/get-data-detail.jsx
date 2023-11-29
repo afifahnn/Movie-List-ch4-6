@@ -4,9 +4,14 @@ import { API_ENDPOINT } from "../utils/api-endpoint";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
-const fetchDataMoviesDetail = async (id) => {
+export const reduxMovieDetail = async (id) => {
     const {data} = await http.get(`${API_ENDPOINT.DETAIL_MOVIE}${id}`)
     return data 
+  }
+
+const fetchDataMoviesDetail = async (id) => {
+    const {data} = await http.get(`${API_ENDPOINT.DETAIL_MOVIE}${id}`)
+    return data.data
 }
 
 // const fetchDataMoviesDetail = async ({ queryKey }) => {
