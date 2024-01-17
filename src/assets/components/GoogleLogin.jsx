@@ -5,8 +5,14 @@ import { toast } from "react-toastify";
 import { CookiesKey, CookiesStorage } from "../../utils/cookies";
 import { API_ENDPOINT } from "../../utils/api-endpoint";
 import IconGoogle from "../../assets/icons/icons-google.svg";
+import { useDispatch } from "react-redux";
+import { setIsLoggedIn, setToken } from "../../redux/reducers/auth/authLoginSlice";
+import { useNavigate } from "react-router-dom";
 
 function GoogleLogin({ buttonText }) {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const registerLoginWithGoogleAction = async (accessToken) => {
     try {
       let data = JSON.stringify({
@@ -27,7 +33,9 @@ function GoogleLogin({ buttonText }) {
       const { token } = response.data.data;
 
       CookiesStorage.set(CookiesKey.AuthToken, token);
-      window.location.href = "/home";
+      dispatch(setToken({token}))
+      dispatch(setIsLoggedIn(true))
+      navigate("/Home")
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response.data.message);

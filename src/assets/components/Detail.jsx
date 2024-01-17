@@ -15,22 +15,6 @@ export const Detail = () => {
   console.log(data);
   const movie = data ? data : [];
 
-  // const dispatch = useDispatch()
-
-  //  const getDetail = () => {
-  //    dispatch(GetMovieDetail(id))
-  //  }
-
-  //   useEffect(() => {
-  //     getDetail()
-  //   }, [] )
-
-  //   const movie = useSelector((store) => store.detail.details)
-  //   // const movie = detail ? detail : [];
-  //   console.log(movie)
-
-
-
   const handleLogout = () => {
     CookiesStorage.remove(CookiesKey.AuthToken);
     window.location.href = "/";
@@ -54,44 +38,45 @@ export const Detail = () => {
 
     <div>
       <img
-        className="w-screen h-screen block"
+        className="w-screen h-screen block object-cover"
         src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
         alt="Gambar"
       />
-      <div className="absolute w-full top-0 left-0 h-full bg-opacity-50 bg-black"></div>
-      <div className="absolute w-full h-15 bottom-0 left-0 bg-gradient-to-t from-black to-transparent"></div>
-      <div className="absolute top-[30%] transform w-[50%] px-4 py-2 space-y-4">
-        <div className="text-slate-100 font-bold text-[3rem]">
-          {movie?.title}
-        </div>
-        <div className="text-slate-100">
-          {movie.genres?.map((genre) => genre.name).join(", ")}
-        </div>
-        <div className="text-slate-100">{movie.overview}</div>
-        <div className="flex items-center justify-start gap-2 text-slate-100">
-          <RiStarLine color="yellow" size={20} />
-          {movie.vote_average}
-        </div>
-        <div className="bg-red-600 px-5 py-1 border-2 border-red-600 rounded-3xl text-white w-[30%] hover:border-red-400 hover:bg-red-400">
-          <button
-            onClick={() => {
-              window.open("https://www.youtube.com");
-            }}
-            className="flex items-center justify-center gap-2"
-          >
-            <RiMovieLine size={20} />
-            WATCH TRAILER
-          </button>
-        </div>
-        <Link to="/Home">
-          <div className="mt-[1rem] bg-red-600 px-5 py-1 border-2 border-red-600 rounded-3xl text-white w-[30%] hover:border-red-400 hover:bg-red-400">
-            <button className="flex items-center justify-center gap-2">
-              <RiArrowLeftLine size={20} />
-              BACK TO HOME
+      <div className="absolute inset-0 grid h-full w-full justify-items-start place-items-center px-10 bg-black/75">
+        <div className="w-[80%] desktop:w-[70%]">
+          <div className="text-slate-100 font-bold text-[3rem]">
+            {movie?.title}
+          </div>
+          <div className="text-slate-100 py-4">
+            {movie.genres?.map((genre) => genre.name).join(", ")}
+          </div>
+          <div className="text-slate-100">{movie.overview}</div>
+          <div className="flex items-center justify-start gap-2 text-slate-100 py-4">
+            <RiStarLine color="yellow" size={20} />
+            {movie.vote_average}
+          </div>
+          <div className="bg-red-600 px-5 py-1 border-2 border-red-600 rounded-3xl text-white w-[80%] tablet:w-[40%] desktop:w-[22%] hover:border-red-400 hover:bg-red-400">
+            <button
+              onClick={() => {
+                window.open("https://www.youtube.com");
+              }}
+              className="flex items-center justify-center gap-2"
+            >
+              <RiMovieLine size={20} />
+              WATCH TRAILER
             </button>
           </div>
-        </Link>
-      </div>
+          <Link to="/Home">
+            <div className="mt-[1rem] bg-red-600 px-5 py-1 border-2 border-red-600 rounded-3xl text-white w-[80%] tablet:w-[40%] desktop:w-[22%] hover:border-red-400 hover:bg-red-400">
+              <button className="flex items-center justify-center gap-2">
+                <RiArrowLeftLine size={20} />
+                BACK TO HOME
+              </button>
+            </div>
+          </Link>
+        </div>
+    </div>
+
     </div>
     </div>
   );
